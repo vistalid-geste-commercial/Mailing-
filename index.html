@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'E-mail Client - Vistalid</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F7FA;
+            background-image: radial-gradient(at 0% 0%, #E0F2F7 0%, transparent 50%), radial-gradient(at 100% 100%, #E6EEFF 0%, transparent 50%);
+            color: #2C3E50;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            color: #1A202C;
+        }
+        .text-vistalid-blue { color: #305afe; }
+        .bg-vistalid-blue { background-color: #305afe; }
+        .hover\:bg-vistalid-blue-dark:hover { background-color: #2446D0; }
+        .focus\:ring-vistalid-blue:focus { --tw-ring-color: #305afe; }
+        .border-vistalid-blue { border-color: #305afe; }
+
+        .text-neutral-dark { color: #2C3E50; }
+        .text-neutral-medium { color: #5A6A7D; }
+        .text-neutral-light { color: #8898AA; }
+        .text-neutral-lighter { color: #AAB7C6; }
+
+        .bg-card { background-color: #FFFFFF; }
+        .border-card { border-color: #DCE4ED; }
+
+        .shadow-lg {
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15), 0 5px 15px -5px rgba(0, 0, 0, 0.08);
+        }
+        .rounded-2xl {
+            border-radius: 1.5rem;
+        }
+        input[type="text"], input[type="email"], input[type="url"], input[type="number"], textarea, select {
+            border: 1px solid #DCE4ED;
+            padding: 0.6rem 0.8rem;
+            border-radius: 0.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #305afe;
+            box-shadow: 0 0 0 2px rgba(48, 90, 254, 0.2);
+        }
+
+        .section-banner {
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-align: center;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
+        }
+        .section-banner.primary {
+            background-color: #305afe;
+        }
+        .section-banner.secondary {
+            background-color: #EAF2FF;
+            color: #305afe;
+        }
+        /* Specific styling for email preview textarea */
+        #email-preview {
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            word-wrap: break-word; /* Break long words */
+            min-height: 400px; /* Ensure enough height for the email content */
+            resize: vertical; /* Allow vertical resizing */
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-neutral-dark">
+
+    <header class="text-center mb-8 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- VISTALID Logo -->
+        <img src="https://i.ibb.co/B03YZgw/67ee4dba8dc0b-images-medium.webp" alt="Logo VISTALID" class="mx-auto h-16 mb-4">
+        <h1 class="text-3xl font-bold text-neutral-dark">Générateur d'E-mail Client</h1>
+        <p class="mt-2 text-neutral-medium">Remplissez les informations ci-dessous pour générer un e-mail de suivi personnalisé.</p>
+    </header>
+
+    <main class="min-h-screen mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Formulaire de Saisie -->
+            <div class="flex flex-col">
+                <div class="section-banner primary">Saisir les informations du client</div>
+                <section id="form-section" class="bg-card p-6 rounded-2xl shadow-lg flex-1">
+                    <form id="email-form" class="space-y-6">
+                        <div>
+                            <label for="client-name" class="block text-sm font-medium text-neutral-medium">Nom du client *</label>
+                            <input type="text" id="client-name" placeholder="Ex: Monsieur Dupont" class="mt-1 block w-full rounded-md border-card shadow-sm focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2" required>
+                        </div>
+                        <div>
+                            <label for="pronoun-choice" class="block text-sm font-medium text-neutral-medium">Tutoiement ou Vouvoiement ? *</label>
+                            <select id="pronoun-choice" class="mt-1 block w-full rounded-md border-card shadow-sm focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2" required>
+                                <option value="vous">Vouvoiement</option>
+                                <option value="tu">Tutoiement</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="meeting-date" class="block text-sm font-medium text-neutral-medium">Date du rendez-vous</label>
+                            <input type="date" id="meeting-date" class="mt-1 block w-full rounded-md border-card shadow-sm focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2">
+                        </div>
+                        <div>
+                            <label for="site-price" class="block text-sm font-medium text-neutral-medium">Prix du site (HT / mois) *</label>
+                            <div class="relative mt-1 rounded-md shadow-sm">
+                                <input type="number" id="site-price" placeholder="Ex: 150" step="1" class="block w-full rounded-md border-card pr-12 focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2" required>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-neutral-lighter sm:text-sm">€</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="contract-duration" class="block text-sm font-medium text-neutral-medium">Durée du contrat (mois) *</label>
+                            <input type="number" id="contract-duration" placeholder="Ex: 48" step="1" class="mt-1 block w-full rounded-md border-card shadow-sm focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2" required>
+                        </div>
+                        <div>
+                            <label for="old-provider-name" class="block text-sm font-medium text-neutral-medium">Nom du prestataire actuel à remplacer</label>
+                            <input type="text" id="old-provider-name" placeholder="Ex: Solocal" class="mt-1 block w-full rounded-md border-card shadow-sm focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2">
+                        </div>
+                        <div>
+                            <label for="example-websites-input" class="block text-sm font-medium text-neutral-medium">Exemples de réalisations (une URL par ligne)</label>
+                            <textarea id="example-websites-input" rows="5" placeholder="https://taxi-csa-etrepagny-27.fr/&#10;https://karintaxi-moret.site-vistalid.fr/fr&#10;https://europort-taxi.fr/&#10;https://taxisdurieuxkonarski.fr/" class="mt-1 block w-full rounded-md border-card shadow-sm focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2"></textarea>
+                        </div>
+                        <div>
+                            <label for="closing-phrase" class="block text-sm font-medium text-neutral-medium">Phrase de fin personnalisée</label>
+                            <textarea id="closing-phrase" rows="2" placeholder="Ex: Comme convenu, je vous laisse en discuter avec votre conjointe ce soir..." class="mt-1 block w-full rounded-md border-card shadow-sm focus:border-vistalid-blue focus:ring-vistalid-blue sm:text-sm p-2"></textarea>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="include-financial-study" class="h-4 w-4 text-vistalid-blue border-gray-300 rounded focus:ring-vistalid-blue">
+                            <label for="include-financial-study" class="ml-2 block text-sm font-medium text-neutral-medium">Inclure l'étude financière</label>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Aperçu de l'E-mail -->
+            <div class="flex flex-col">
+                <div class="section-banner secondary">Aperçu de l'e-mail</div>
+                <section id="preview-section" class="h-full">
+                    <div class="bg-card p-6 rounded-2xl shadow-lg h-full border border-card">
+                        <h3 class="text-xl font-semibold text-neutral-dark mb-4">Objet de l'e-mail :</h3>
+                        <p id="email-subject-preview" class="text-neutral-medium mb-6 font-medium"></p>
+                        
+                        <h3 class="text-xl font-semibold text-neutral-dark mb-4">Corps de l'e-mail :</h3>
+                        <textarea id="email-preview" class="w-full text-neutral-dark p-3 border border-card rounded-md focus:outline-none focus:border-vistalid-blue"></textarea>
+                    </div>
+                </section>
+            </div>
+        </div>
+        
+        <div id="actions-section" class="mt-8 flex justify-center items-center gap-4 py-4">
+            <button type="button" id="copy-email-button" class="px-6 py-3 bg-vistalid-blue text-white font-semibold rounded-lg shadow-md hover:bg-vistalid-blue-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-vistalid-blue transition">
+                Copier l'e-mail
+            </button>
+             <button type="reset" form="email-form" class="px-6 py-3 bg-neutral-lighter text-neutral-dark font-semibold rounded-lg hover:bg-neutral-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-light transition">
+                Réinitialiser le formulaire
+            </button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('email-form');
+            const emailPreview = document.getElementById('email-preview');
+            const emailSubjectPreview = document.getElementById('email-subject-preview');
+
+            const fields = {
+                clientName: document.getElementById('client-name'),
+                pronounChoice: document.getElementById('pronoun-choice'),
+                meetingDate: document.getElementById('meeting-date'),
+                sitePrice: document.getElementById('site-price'),
+                contractDuration: document.getElementById('contract-duration'),
+                oldProviderName: document.getElementById('old-provider-name'),
+                exampleWebsitesInput: document.getElementById('example-websites-input'), // Changed to single textarea
+                closingPhrase: document.getElementById('closing-phrase'),
+                includeFinancialStudy: document.getElementById('include-financial-study')
+            };
+
+            // Function to get correct pronoun forms based on choice
+            function getPronounForms(choice) {
+                if (choice === 'tu') {
+                    return {
+                        greeting: 'Bonjour',
+                        verbRencontrer: 'te rencontrer',
+                        verbFaire: 'te fais',
+                        subjectTuTrouveras: 'tu trouveras',
+                        subjectTuDeviens: 'Tu deviens', // Capitalized
+                        possessiveConjointe: 'ta',
+                        possessiveDisposition: 'ta disposition',
+                        avecQui: 'toi',
+                        possessiveSite: 'ton',
+                        possessiveCommunication: 'ta communication',
+                        possessiveContract: 'ton',
+                        subjectTuDois: 'tu dois',
+                        verbConsulter: 'Tu peux également consulter'
+                    };
+                } else { // Default to 'vous'
+                    return {
+                        greeting: 'Bonjour',
+                        verbRencontrer: 'vous rencontrer',
+                        verbFaire: 'vous fais',
+                        subjectTuTrouveras: 'vous trouverez',
+                        subjectTuDeviens: 'Vous devenez', // Capitalized
+                        possessiveConjointe: 'votre',
+                        possessiveDisposition: 'votre disposition',
+                        avecQui: 'vous',
+                        possessiveSite: 'votre',
+                        possessiveCommunication: 'votre communication',
+                        possessiveContract: 'votre',
+                        subjectTuDois: 'vous devez',
+                        verbConsulter: 'Vous pouvez également consulter'
+                    };
+                }
+            }
+
+            // Define the email template with placeholders
+            const emailTemplateSubject = "Suite à notre échange concernant votre projet web";
+            const emailTemplateBody = `{{pronounForms.greeting}} {{clientName}},
+C'était un plaisir d'avoir pu {{pronounForms.verbRencontrer}} aujourd'hui.
+
+Comme convenu, je {{pronounForms.verbFaire}} un récapitulatif du rendez-vous fait ensemble, {{pronounForms.subjectTuTrouveras}} également ci-joint le devis{{financialStudyText}}.
+
+<b><u>Les avantages de notre solution :</u></b>
+- <b>{{pronounForms.subjectTuDeviens}} propriétaire de {{pronounForms.possessiveSite}} site</b> à l’issue du contrat, sans reconduction tacite ni frais de création.
+- <b>Forfait de {{sitePrice}} € HT / mois pendant {{contractDuration}} mois</b>, au terme desquels {{pronounForms.possessiveSite}} site reste en ligne et modifiable sans coût supplémentaire.
+- Nous optimisons {{pronounForms.possessiveSite}} référencement naturel avec l’ajout illimité de mots-clés, <b>sans surcoût</b>.
+- <b>Accompagnement complet dans {{pronounForms.possessiveCommunication}} digitale</b>, avec une création personnalisée et dynamique de {{pronounForms.possessiveSite}} site.
+
+<br>
+<b><u>Gestion administrative :</u></b>
+- Nous nous occupons de la <b>résiliation de {{pronounForms.possessiveContract}} contrat actuel avec {{oldProviderName}}</b>
+- Nous nous chargeons du <b>transfert de {{pronounForms.possessiveSite}} nom de domaine</b>.
+- Nous nous chargeons de <b>régler les 616HT que {{pronounForms.subjectTuDois}} à {{pronounForms.possessiveContract}} prestataire actuel</b>
+
+<br>
+<b><u>Exemples de réalisations :</u></b>
+{{exampleWebsitesHtml}}
+
+{{pronounForms.verbConsulter}} notre site et lire les avis de nos clients : www.vistalid.fr.
+
+{{closingPhrase}}
+
+En attendant, je reste à {{pronounForms.possessiveDisposition}} pour toute question au numéro indiqué ci-dessous.
+Au plaisir d’échanger avec {{pronounForms.avecQui}},`;
+
+            function updateEmailPreview() {
+                const pronounForms = getPronounForms(fields.pronounChoice.value);
+                let subject = emailTemplateSubject;
+                let body = emailTemplateBody;
+
+                // Determine financial study text
+                const financialStudyText = fields.includeFinancialStudy.checked ? ' ainsi que l\'étude financière' : '';
+
+                // Prepare example websites list as HTML links
+                let exampleWebsitesHtml = '';
+                const rawWebsites = fields.exampleWebsitesInput.value.split('\n');
+                const validWebsites = rawWebsites.map(url => url.trim()).filter(url => url !== '');
+
+                if (validWebsites.length > 0) {
+                    exampleWebsitesHtml = '<ul style="list-style-type: none; padding: 0; margin: 0;">';
+                    validWebsites.forEach(url => {
+                        // Ensure URL starts with http:// or https://
+                        const fullUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+                        exampleWebsitesHtml += `<li><a href="${fullUrl}" style="color: #305afe; text-decoration: underline;">${url}</a></li>`;
+                    });
+                    exampleWebsitesHtml += '</ul>';
+                } else {
+                    exampleWebsitesHtml = '- [Aucun exemple fourni]';
+                }
+
+                // Replace placeholders in body
+                body = body.replace(/{{clientName}}/g, fields.clientName.value || 'Monsieur/Madame [Nom du client]');
+                body = body.replace(/{{meetingDate}}/g, formatDate(fields.meetingDate.value) || 'aujourd\'hui');
+                body = body.replace(/{{sitePrice}}/g, fields.sitePrice.value || 'XXX');
+                body = body.replace(/{{contractDuration}}/g, fields.contractDuration.value || 'XX');
+                body = body.replace(/{{oldProviderName}}/g, fields.oldProviderName.value || 'votre prestataire actuel');
+                body = body.replace(/{{exampleWebsitesHtml}}/g, exampleWebsitesHtml); // Use HTML version
+                body = body.replace(/{{closingPhrase}}/g, fields.closingPhrase.value || '[Phrase de fin personnalisée]');
+                body = body.replace(/{{financialStudyText}}/g, financialStudyText); // Insert financial study text
+
+                // Replace pronoun forms
+                for (const key in pronounForms) {
+                    body = body.replace(new RegExp(`{{pronounForms.${key}}}`, 'g'), pronounForms[key]);
+                }
+
+                emailSubjectPreview.textContent = subject;
+                emailPreview.value = body;
+            }
+
+            function formatDate(dateString) {
+                if (!dateString) return '';
+                const date = new Date(dateString);
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                return date.toLocaleDateString('fr-FR', options);
+            }
+
+            // Event listeners for form fields
+            for (const key in fields) {
+                if (fields.hasOwnProperty(key)) {
+                    fields[key].addEventListener('input', updateEmailPreview);
+                    fields[key].addEventListener('change', updateEmailPreview); // For date, select, and checkbox inputs
+                }
+            }
+
+            // Initial update of the email preview
+            updateEmailPreview();
+
+            // Copy to clipboard functionality - MODIFIED TO PRESERVE BOLD AND EXCLUDE SUBJECT
+            document.getElementById('copy-email-button').addEventListener('click', function() {
+                const emailContentHtml = emailPreview.value.replace(/\n/g, '<br>'); // Convert newlines to <br> for HTML paste
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = emailContentHtml;
+                tempDiv.style.position = 'absolute'; // Hide it
+                tempDiv.style.left = '-9999px'; // Hide it
+                document.body.appendChild(tempDiv);
+
+                const range = document.createRange();
+                range.selectNodeContents(tempDiv);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                document.execCommand('copy');
+                
+                selection.removeAllRanges(); // Deselect
+                document.body.removeChild(tempDiv); // Clean up
+
+                alert('L\'e-mail a été copié dans le presse-papiers (avec le formatage) !');
+            });
+
+            // Reset form functionality
+            form.addEventListener('reset', () => {
+                setTimeout(() => {
+                    // Reset fields to empty or default static values
+                    fields.clientName.value = '';
+                    fields.pronounChoice.value = 'vous'; // Default to vouvoiement
+                    fields.meetingDate.value = ''; // Keep empty
+                    fields.sitePrice.value = ''; // Keep empty
+                    fields.contractDuration.value = ''; // Keep empty
+                    fields.oldProviderName.value = ''; // Keep empty
+                    fields.exampleWebsitesInput.value = ''; // Reset the textarea
+                    fields.closingPhrase.value = ''; // Keep empty
+                    fields.includeFinancialStudy.checked = false; // Uncheck financial study
+                    updateEmailPreview();
+                }, 0); // Allow form reset to complete before updating
+            });
+        });
+    </script>
+</body>
+</html>
